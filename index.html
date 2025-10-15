@@ -188,50 +188,8 @@
 
     <p class="foot">© <span id="y"></span> Tenant Rights Letter Pro · 本页面信息与模板不构成法律意见。</p>
   </div>
+<!-- 小功能脚本：年份 -->
+<script>
+  document.getElementById('y').textContent = new Date().getFullYear();
+</script>
 
-  <!-- 小功能脚本：平滑跳转 + URL 参数配置（gpt, gem, accent, brand, cta1, cta2） -->
-  <script>
-    // 年份
-    document.getElementById('y').textContent = new Date().getFullYear();
-
-    // 平滑跳转
-    document.querySelectorAll('a[href^="#"]').forEach(a=>{
-      a.addEventListener('click',e=>{
-        const id=a.getAttribute('href').slice(1);
-        const el=document.getElementById(id);
-        if(el){e.preventDefault();el.scrollIntoView({behavior:'smooth'});}
-      });
-    });
-
-    // URL 参数配置
-    (function(){
-      try{
-        const p=new URLSearchParams(location.search);
-        const gpt=p.get('gpt'); const gem=p.get('gem');
-        const accent=p.get('accent'); const brand=p.get('brand');
-        const c1=p.get('cta1'); const c2=p.get('cta2');
-
-        function setHref(sel,url){
-          if(!url) return;
-          try{
-            const a=document.querySelector(sel); if(!a) return;
-            const u=new URL(url, location.href);
-            if(['http:','https:','mailto:'].includes(u.protocol)){ a.setAttribute('href',u.href); }
-          }catch(e){}
-        }
-        setHref('.btn.btn-primary', gpt);
-        setHref('.btn.btn-secondary', gem);
-
-        if(accent && /^#([0-9a-fA-F]{3}){1,2}$/.test(accent)){
-          document.documentElement.style.setProperty('--accent', accent);
-        }
-        if(brand){
-          const t=document.querySelector('.brand-text strong'); if(t) t.textContent=brand;
-        }
-        if(c1){ const el=document.querySelector('.btn.btn-primary'); if(el) el.textContent=c1; }
-        if(c2){ const el=document.querySelector('.btn.btn-secondary'); if(el) el.textContent=c2; }
-      }catch(e){}
-    })();
-  </script>
-</body>
-</html>
