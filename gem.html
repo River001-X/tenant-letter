@@ -1,0 +1,36 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Redirecting to Gemini…</title>
+<meta name="robots" content="noindex">
+
+<script>
+(function () {
+  // 保留现有查询串（去掉第一个?，如果有则在末尾补&，方便继续拼接）
+  const qsRaw = location.search ? location.search.replace(/^\?/, '') + '&' : '';
+
+  // 取 src（没有就 unknown），可用于识别按钮/来源
+  const qp  = new URLSearchParams(location.search);
+  const src = qp.get('src') || 'unknown';
+
+  // 统一 UTM（可按需改 utm_* 值）
+  const utm = `utm_source=tenant-letter&utm_medium=site&utm_campaign=gem_redirect&src=${encodeURIComponent(src)}`;
+
+  // 目标地址（需要换站点/路径只改这一行即可）
+  const target = `https://gemini.google.com/app/?${qsRaw}${utm}`;
+
+  // 302 跳转
+  location.replace(target);
+})();
+</script>
+
+<p>Redirecting to Gemini…</p>
+
+<noscript>
+  <!-- 无 JS 后备：用 meta refresh 立即跳转，并提供手动链接 -->
+  <meta http-equiv="refresh"
+        content="0;url=https://gemini.google.com/app/?utm_source=tenant-letter&utm_medium=site&utm_campaign=gem_redirect">
+  <p>JavaScript 已关闭，请点击
+    <a href="https://gemini.google.com/app/?utm_source=tenant-letter&utm_medium=site&utm_campaign=gem_redirect">这里</a>
+    继续前往 Gemini。
+  </p>
+</noscript>
