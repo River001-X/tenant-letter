@@ -1,0 +1,37 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Redirecting to GPT…</title>
+<meta name="robots" content="noindex">
+
+<script>
+(function () {
+  // 把现有的查询串原样透传（去掉开头 ?，如果有就补个 &）
+  const qsRaw = location.search ? location.search.replace(/^\?/, '') + '&' : '';
+
+  // 取自定义的来源标记（比如 src=hero_btn），没有则记为 unknown
+  const qp  = new URLSearchParams(location.search);
+  const src = qp.get('src') || 'unknown';
+
+  // 统一打点参数（可按需改 utm_* 值）
+  const utm = `utm_source=tenant-letter&utm_medium=site&utm_campaign=gpt_redirect&src=${encodeURIComponent(src)}`;
+
+  // 目标地址（需要改目标，就改这一行的域名或路径即可）
+  const target = `https://chatgpt.com/?${qsRaw}${utm}`;
+
+  // 302 风格跳转
+  location.replace(target);
+})();
+</script>
+
+<p>Redirecting to GPT…</p>
+
+<noscript>
+  <!-- 无 JS 后备：meta refresh 立即跳转，并提供手动链接 -->
+  <meta http-equiv="refresh"
+        content="0;url=https://chatgpt.com/?utm_source=tenant-letter&utm_medium=site&utm_campaign=gpt_redirect&src=noscript">
+  <p>
+    JavaScript 已关闭，请点击
+    <a href="https://chatgpt.com/?utm_source=tenant-letter&utm_medium=site&utm_campaign=gpt_redirect&src=noscript">这里</a>
+    继续前往 GPT。
+  </p>
+</noscript>
