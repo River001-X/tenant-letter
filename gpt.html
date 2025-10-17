@@ -1,40 +1,29 @@
 <!doctype html>
+<html lang="en">
 <meta charset="utf-8">
-<title>Redirecting to Gemini…</title>
-<meta name="robots" content="noindex">
-
+<title>Redirecting…</title>
 <script>
-(function () {
-  // 把现有的查询串原样透传（去掉开头 ?，如果有就补个 &）
-  const qsRaw = location.search ? location.search.replace(/^\?/, '') + '&' : '';
+  const src = new URLSearchParams(location.search).get('src') || 'unknown';
 
-  // 取自定义的来源标记（比如 src=hero_btn），没有则记为 unknown
-  const qp  = new URLSearchParams(location.search);
-  const src = qp.get('src') || 'unknown';
+  // 可选：如已加载 GA4，这里可以上报事件
+  // if (typeof gtag === 'function') {
+  //   gtag('event', 'outbound_click', { destination: 'chatgpt', src });
+  // }
 
-  // 统一打点参数（可按需改 utm_*）
-  const utm = `utm_source=tenant-letter&utm_medium=site&utm_campaign=gem_redirect&src=${encodeURIComponent(src)}`;
+  // 目标：ChatGPT（如你更想用 chatgpt.com，也可把下面改为 'https://chatgpt.com/'）
+  const dest = new URL('https://chat.openai.com/');
 
-  // 目标地址（需要改目标，就改这一行域名或路径即可）
-  const target = `https://gemini.google.com/app/?${qsRaw}${utm}`;
+  // 只保留一次 src，并附带你的 UTM
+  dest.searchParams.set('utm_source', 'tenant-letter');
+  dest.searchParams.set('utm_medium', 'site');
+  dest.searchParams.set('utm_campaign', 'gpt_redirect');
+  dest.searchParams.set('src', src);
 
-  // 302 风格跳转
-  location.replace(target);
-})();
+  // 跳转
+  location.replace(dest.href);
 </script>
-
-<p>Redirecting to Gemini…</p>
-
 <noscript>
-  <!-- 无 JS 备用：用 meta refresh 立即跳转，并提供手动链接 -->
-  <meta http-equiv="refresh"
-        content="0;url=https://gemini.google.com/app/?utm_source=tenant-letter&utm_medium=site&utm_campaign=gem_redirect">
-
-  <p>
-    JavaScript 已关闭，请点击
-    <a href="https://gemini.google.com/app/?utm_source=tenant-letter&utm_medium=site&utm_campaign=gem_redirect">
-      这里
-    </a>
-    继续前往 Gemini。
-  </p>
+  Redirecting to ChatGPT…
+  <a href="https://chat.openai.com/">Click here</a>
 </noscript>
+</html>
