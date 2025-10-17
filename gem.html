@@ -3,22 +3,19 @@
 <meta charset="utf-8">
 <title>Redirecting…</title>
 <script>
-  // 读取来源参数
   const src = new URLSearchParams(location.search).get('src') || 'unknown';
 
-  // （可选）这里发 GA4 事件
+  // 如果已加载 GA4，想要统计就把下面三行注释去掉
   // if (typeof gtag === 'function') {
   //   gtag('event', 'outbound_click', { destination: 'gemini', src: src });
   // }
 
-  // 目标地址（只保留一个 src，外加你自己的 UTM）
   const dest = new URL('https://gemini.google.com/app');
   dest.searchParams.set('utm_source', 'tenant-letter');
   dest.searchParams.set('utm_medium', 'site');
   dest.searchParams.set('utm_campaign', 'gem_redirect');
   dest.searchParams.set('src', src);
 
-  // 跳转
   location.replace(dest.href);
 </script>
 <noscript>
